@@ -1,31 +1,28 @@
 N = int(input())
-alphabet = [input() for _ in range(N)]
-shortcut = []
+words = [input() for _ in range(N)]
+shortkey = []
 result = []
 
-for a in alphabet:
-    words = a.split()
-    found = False
+for word in words:
+    multi_words = word.split()
 
-    for i in range(len(words)):
-        if words[i][0].lower() not in shortcut:
-            shortcut.append(words[i][0].lower())
-            words[i] = '[' + words[i][0] + ']' + words[i][1:]
-            found = True
+    for i in range(len(multi_words)):
+        if multi_words[i][0].lower() not in shortkey:
+            shortkey.append(multi_words[i][0].lower())
+            multi_words[i] = "[" + multi_words[i][0] + "]" + multi_words[i][1:]
+            break
+    else:
+        for i in range(len(multi_words)):
+            for j in range(len(multi_words[i])):
+                if multi_words[i][j].lower() not in shortkey:
+                    shortkey.append(multi_words[i][j].lower())
+                    multi_words[i] = multi_words[i][:j] + "[" + multi_words[i][j] + "]" + multi_words[i][j+1:]
+                    break
+            else:
+                continue
             break
 
-    if not found:
-        for i in range(len(words)):
-            for j in range(len(words[i])):
-                if words[i][j].lower() not in shortcut:
-                    shortcut.append(words[i][j].lower())
-                    words[i] = words[i][:j] + '[' + words[i][j] + ']' + words[i][j + 1:]
-                    found = True
-                    break
-            if found:
-                break
-
-    result.append(' '.join(words))
+    result.append(' '.join(multi_words))
 
 for r in result:
     print(r)
