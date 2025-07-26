@@ -1,28 +1,21 @@
-from collections import deque
+computers = int(input())
+n = int(input())
+network = [[] for _ in range(computers+1)] 
+visited = [0]*(computers+1)
+cnt = 0
 
-N = int(input()) # 컴퓨터 수
-K = int(input()) # 페어 수
+for _ in range(n):
+    a,b = map(int,input().split())
+    network[a].append(b)
+    network[b].append(a)
 
-computers = [[] for _ in range(N+1)]
-visited =[0]*(N+1)
+def dfs (graph,v):
+    global cnt
+    visited[v] =1
+    cnt +=1
+    for i in graph[v]:
+        if visited[i] ==0:
+            dfs(graph,i)
+    return cnt -1
 
-for _ in range(K):
-    x,y = map(int,input().split())
-    computers[x].append(y)
-    computers[y].append(x) #양방향 연결
-
-def bfs(start):
-    cnt = 0
-    queue = deque([start])
-    visited[start] = 1
-
-    while queue:
-        cur = queue.popleft()
-        for computer in computers[cur]:
-            if not visited[computer]:
-                visited[computer]=1
-                queue.append(computer)
-                cnt+=1
-    return cnt
-
-print(bfs(1))
+print(dfs(network,1))
